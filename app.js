@@ -146,6 +146,9 @@ document.addEventListener('DOMContentLoaded', () => {
   initScrollProgress();
   initTooltips();
   initHeroButtons();
+  initSwipeGestures();
+  initKeyboardNavigation();
+  initMobileDock();
   updateModuleProgress();
 });
 
@@ -471,9 +474,10 @@ function initScrollProgress() {
   if (quiz) observer.observe(quiz);
 }
 
-// ============ TOOLTIPS (Email flags) ============
+// ============ TOOLTIPS (Email flags with Touch Support) ============
 function initTooltips() {
   const tooltip = document.getElementById('tooltip');
+  let activeTouchEl = null;
 
   document.querySelectorAll('.ef-bad, .ef-flag, .ef-bad-link').forEach(el => {
     const tip = el.getAttribute('data-tip') || el.closest('[data-tip]')?.getAttribute('data-tip');
@@ -488,8 +492,28 @@ function initTooltips() {
     el.addEventListener('mousemove', positionTooltip);
 
     el.addEventListener('mouseleave', () => {
-      tooltip.classList.remove('visible');
+      if (!activeTouchEl) tooltip.classList.remove('visible');
     });
+
+    // Touch tap support for mobile devices
+    el.addEventListener('click', (e) => {
+      e.stopPropagation();
+      tooltip.textContent = tip;
+      tooltip.classList.add('visible');
+      const rect = el.getBoundingClientRect();
+      const x = Math.max(16, Math.min(rect.left, window.innerWidth - 290));
+      const y = rect.bottom + 8;
+      tooltip.style.left = x + 'px';
+      tooltip.style.top = Math.min(y, window.innerHeight - 100) + 'px';
+      activeTouchEl = el;
+    });
+  });
+
+  document.addEventListener('click', (e) => {
+    if (activeTouchEl && !e.target.closest('[data-tip]')) {
+      tooltip.classList.remove('visible');
+      activeTouchEl = null;
+    }
   });
 
   function positionTooltip(e) {
@@ -498,6 +522,92 @@ function initTooltips() {
     tooltip.style.left = Math.min(x, window.innerWidth - 280) + 'px';
     tooltip.style.top = Math.min(y, window.innerHeight - 120) + 'px';
   }
+}
+
+// ============ MOBILE SWIPE GESTURES ============
+function initSwipeGestures() {
+  const container = document.querySelector('.slides-container');
+  if (!container) return;
+
+  let touchStartX = 0;
+  let touchStartY = 0;
+
+  container.addEventListener('touchstart', (e) => {
+    if (e.touches.length === 1) {
+      touchStartX = e.touches[0].screenX;
+      touchStartY = e.touches[0].screenY;
+    }
+  }, { passive: true });
+
+  container.addEventListener('touchend', (e) => {
+    if (e.changedTouches.length === 1) {
+      const touchEndX = e.changedTouches[0].screenX;
+      const touchEndY = e.changedTouches[0].screenY;
+      const diffX = touchEndX - touchStartX;
+      const diffY = touchEndY - touchStartY;
+
+      // Ensure horizontal swipe
+      if (Math.abs(diffX) > 45 && Math.abs(diffX) > Math.abs(diffY) * 1.4) {
+        if (diffX < 0 && currentSlide < totalSlides - 1) {
+          // Swipe Left -> Next
+          goToSlide(currentSlide + 1);
+        } else if (diffX > 0 && currentSlide > 0) {
+          // Swipe Right -> Prev
+          goToSlide(currentSlide - 1);
+        }
+      }
+    }
+  }, { passive: true });
+}
+
+// ============ DESKTOP KEYBOARD NAVIGATION ============
+function initKeyboardNavigation() {
+  document.addEventListener('keydown', (e) => {
+    if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) return;
+
+    if (e.key === 'ArrowRight') {
+      if (currentSlide < totalSlides - 1) {
+        goToSlide(currentSlide + 1);
+      }
+    } else if (e.key === 'ArrowLeft') {
+      if (currentSlide > 0) {
+        goToSlide(currentSlide - 1);
+      }
+    } else if (quizStarted && !quizCompleted) {
+      const optMap = {
+        '1': 0, '2': 1, '3': 2, '4': 3,
+        'a': 0, 'b': 1, 'c': 2, 'd': 3,
+        'A': 0, 'B': 1, 'C': 2, 'D': 3
+      };
+      if (optMap[e.key] !== undefined) {
+        const optionButtons = document.querySelectorAll('.option-btn');
+        if (optionButtons[optMap[e.key]] && !optionButtons[optMap[e.key]].disabled) {
+          optionButtons[optMap[e.key]].click();
+        }
+      }
+    }
+  });
+}
+
+// ============ MOBILE DOCK OBSERVER ============
+function initMobileDock() {
+  const dockLinks = document.querySelectorAll('.dock-link');
+  const sections = ['hero', 'slides', 'examples', 'quiz']
+    .map(id => document.getElementById(id))
+    .filter(Boolean);
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        dockLinks.forEach(link => {
+          link.classList.toggle('active', link.getAttribute('data-nav') === id);
+        });
+      }
+    });
+  }, { threshold: 0.25 });
+
+  sections.forEach(sec => observer.observe(sec));
 }
 
 // ============ SMOOTH APPEAR ON SCROLL ============
