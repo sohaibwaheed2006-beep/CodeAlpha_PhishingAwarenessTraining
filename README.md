@@ -9,6 +9,9 @@
 ![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
 ![Status](https://img.shields.io/badge/Task%20Status-Completed-brightgreen?style=for-the-badge)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-GitHub%20Pages-success?style=for-the-badge&logo=github)](https://sohaibwaheed2006-beep.github.io/CodeAlpha_PhishingAwarenessTraining/)
+
+🌐 **Live Demo Website:** [https://sohaibwaheed2006-beep.github.io/CodeAlpha_PhishingAwarenessTraining/](https://sohaibwaheed2006-beep.github.io/CodeAlpha_PhishingAwarenessTraining/)
 
 ---
 
