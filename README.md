@@ -51,50 +51,6 @@ Interactive breakdown of landmark cybersecurity incidents:
 
 ---
 
-## 📁 Repository Structure
-
-```
-CodeAlpha_PhishingAwarenessTraining/
-│
-├── index.html       # Primary application markup and semantic structure
-├── style.css        # Modern responsive dark-mode styling with glassmorphism
-├── app.js           # Interactive training logic, slide deck engine, quiz system & certificate generator
-├── favicon.jpg      # Custom cybersecurity shield logo / browser favicon
-├── .gitignore       # Git exclusion rules
-└── README.md        # Comprehensive project documentation
-```
-
----
-
-## 🚀 Quick Start / How to Run Locally
-
-This is a client-side web application requiring **no external build tools, backend setup, or npm installation**.
-
-### Method 1: Direct Browser Launch
-1. Clone or download this repository:
-   ```bash
-   git clone https://github.com/sohaibwaheed2006-beep/CodeAlpha_PhishingAwarenessTraining.git
-   ```
-2. Navigate into the folder:
-   ```bash
-   cd CodeAlpha_PhishingAwarenessTraining
-   ```
-3. Double-click `index.html` or right-click and choose **Open with Browser** (Chrome, Edge, Firefox, Brave).
-
-### Method 2: VS Code Live Server
-1. Open the project folder in VS Code.
-2. Install the **Live Server** extension (`ritwickdey.liveserver`).
-3. Click **Go Live** on the bottom status bar or right-click `index.html` → **Open with Live Server**.
-4. Browse to `http://127.0.0.1:5500`.
-
-### Method 3: Python Simple Server
-```bash
-python -m http.server 8000
-# Open http://localhost:8000 in your browser
-```
-
----
-
 ## 🛡️ Core Educational Content Summary
 
 ### Common Phishing Red Flags
@@ -105,18 +61,6 @@ python -m http.server 8000
 | **Urgency / Threat** | *"Account suspended within 2 hours unless verified"* | Legitimate organizations do not demand instant action via email |
 | **Attachments** | Obfuscated archives (`.zip`, `.iso`), macros in `.docm`, `.html` | Never enable macros; scan with sandbox/antivirus |
 | **Domain Typos** | `micosoft.com`, `amaz0n.support`, `bank-security-portal.co` | Inspect root domain name carefully |
-
----
-
-## 📜 CodeAlpha Internship Verification
-
-This project fulfills **Task 2 (Phishing Awareness Training)** under the **CodeAlpha Cyber Security Internship**:
-- ✅ Created an interactive online module focused on phishing attacks
-- ✅ Explained how to recognize phishing emails and fake websites
-- ✅ Educated on social engineering tactics used by attackers
-- ✅ Provided actionable best practices and tips to avoid falling victim
-- ✅ Included real-world examples and interactive quiz engagement
-- ✅ Source code structured in dedicated repository `CodeAlpha_PhishingAwarenessTraining`
 
 ---
 
